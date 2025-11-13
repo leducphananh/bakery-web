@@ -1,8 +1,44 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🧁 Milove Bakery Website
 
-## Getting Started
+A modern, beautiful bakery website built with Next.js, featuring a sweet pink aesthetic and smooth animations.
 
-First, run the development server:
+## ✨ Features
+
+- 🎨 **Beautiful Design**: Pink-themed UI with gradient backgrounds and smooth animations
+- 🖼️ **Optimized Images**: Using Next.js Image component with Unsplash integration
+- 🎭 **Custom Fonts**: Pacifico for headings and Poppins for body text via next/font
+- 📱 **Responsive Design**: Mobile-friendly layout with Tailwind CSS v4
+- 🧩 **UI Components**: Built with Radix UI primitives and shadcn/ui components
+- 🎯 **TypeScript**: Fully typed for better development experience
+- 🌙 **Dark Mode Support**: Built-in dark mode capabilities
+
+## 🚀 Getting Started
+
+### Prerequisites
+
+- Node.js 20+
+- npm, yarn, pnpm, or bun
+
+### Installation
+
+1. Clone the repository:
+
+```bash
+git clone <repository-url>
+cd bakery-web
+```
+
+2. Install dependencies:
+
+```bash
+npm install
+# or
+yarn install
+# or
+pnpm install
+```
+
+3. Run the development server:
 
 ```bash
 npm run dev
@@ -10,27 +46,127 @@ npm run dev
 yarn dev
 # or
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+4. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🛠️ Tech Stack
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Framework**: [Next.js 16](https://nextjs.org) (React 19)
+- **Styling**: [Tailwind CSS v4](https://tailwindcss.com)
+- **UI Components**: [Radix UI](https://radix-ui.com), [shadcn/ui](https://ui.shadcn.com)
+- **Icons**: [Lucide React](https://lucide.dev)
+- **Fonts**: [next/font](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) with Google Fonts
+- **Language**: [TypeScript](https://www.typescriptlang.org)
+- **Code Quality**: ESLint, Prettier
 
-## Learn More
+## 📦 Key Dependencies
 
-To learn more about Next.js, take a look at the following resources:
+- `next` - React framework
+- `react` & `react-dom` - UI library
+- `tailwindcss` - Utility-first CSS framework
+- `@radix-ui/*` - Unstyled, accessible UI components
+- `lucide-react` - Icon library
+- `react-hook-form` - Form handling
+- `recharts` - Chart library
+- `sonner` - Toast notifications
+- `next-themes` - Theme management
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🎨 Customization
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Colors
 
-## Deploy on Vercel
+The color scheme is defined in `app/globals.css` using CSS custom properties. Main colors:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- Pink accent: `#FFB5C5`
+- Brown text: `#8B5A3C`
+- Cream background: `#FFF5E6` to `#FFE9F0`
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Fonts
+
+Fonts are configured in `app/layout.tsx`:
+
+- **Pacifico**: Decorative font for headings and logo
+- **Poppins**: Clean sans-serif for body text
+
+Use Tailwind classes:
+
+- `font-pacifico` for headings
+- `font-poppins` or default for body text
+
+## 📄 Project Structure
+
+```
+bakery-web/
+├── app/
+│   ├── components/
+│   │   ├── figma/          # Image components
+│   │   ├── ui/             # shadcn/ui components
+│   │   ├── ProductCard.tsx
+│   │   └── ReviewCard.tsx
+│   ├── globals.css         # Global styles & theme
+│   ├── layout.tsx          # Root layout
+│   └── page.tsx            # Home page
+├── public/                 # Static assets
+├── next.config.ts          # Next.js configuration
+├── tailwind.config.ts      # Tailwind configuration
+└── tsconfig.json           # TypeScript configuration
+```
+
+## 🖼️ Image Configuration
+
+External image domains are configured in `next.config.ts`:
+
+- `images.unsplash.com` - Product and hero images
+- `i.pravatar.cc` - Avatar images
+
+## 🚢 Deployment
+
+### Deploy on Vercel
+
+The easiest way to deploy:
+
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new)
+
+1. Push your code to GitHub
+2. Import your repository to Vercel
+3. Vercel will automatically detect Next.js and deploy
+
+### Other Platforms
+
+You can also deploy to:
+
+- Netlify
+- Railway
+- AWS Amplify
+- Digital Ocean
+
+See [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for details.
+
+## 📝 Scripts
+
+```bash
+npm run dev      # Start development server
+npm run build    # Build for production
+npm run start    # Start production server
+npm run lint     # Run ESLint
+```
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## 📄 License
+
+This project is open source and available under the [MIT License](LICENSE).
+
+## 🙏 Acknowledgments
+
+- Design inspiration from modern bakery websites
+- Images from [Unsplash](https://unsplash.com)
+- UI components from [shadcn/ui](https://ui.shadcn.com)
+- Icons from [Lucide](https://lucide.dev)
+
+---
+
+Made with ❤️ for bakery lovers
