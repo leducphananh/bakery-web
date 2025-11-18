@@ -28,9 +28,9 @@ import { CakeType } from "./CakeCard";
 
 const cakeFormSchema = z.object({
   name: z.string().min(1, "Tên bánh không được để trống"),
-  price: z.string().min(1, "Giá bán không được để trống"),
-  originalPrice: z.string().min(1, "Giá gốc không được để trống"),
-  image: z.string().url("URL hình ảnh không hợp lệ"),
+  price: z.number().min(1, "Giá bán phải lớn hơn 0"),
+  originalPrice: z.number().min(1, "Giá gốc phải lớn hơn 0").optional(),
+  image: z.string().url("URL hình ảnh không hợp lệ").optional(),
   description: z.string().optional(),
 });
 
@@ -41,6 +41,7 @@ interface CakeFormDialogProps {
   onOpenChange: (open: boolean) => void;
   editingCake: CakeType | null;
   onSubmit: (values: CakeFormValues) => void;
+  isSubmitting?: boolean;
 }
 
 export function CakeFormDialog({
@@ -48,13 +49,14 @@ export function CakeFormDialog({
   onOpenChange,
   editingCake,
   onSubmit,
+  isSubmitting = false,
 }: CakeFormDialogProps) {
   const form = useForm<CakeFormValues>({
     resolver: zodResolver(cakeFormSchema),
     defaultValues: {
       name: "",
-      price: "",
-      originalPrice: "",
+      price: 0,
+      originalPrice: 0,
       image: "",
       description: "",
     },
@@ -65,15 +67,15 @@ export function CakeFormDialog({
       form.reset({
         name: editingCake.name,
         price: editingCake.price,
-        originalPrice: editingCake.originalPrice,
-        image: editingCake.image,
+        originalPrice: editingCake.originalPrice || 0,
+        image: editingCake.image || "",
         description: editingCake.description || "",
       });
     } else {
       form.reset({
         name: "",
-        price: "",
-        originalPrice: "",
+        price: 0,
+        originalPrice: 0,
         image: "",
         description: "",
       });
@@ -173,7 +175,7 @@ export function CakeFormDialog({
                         allowNegative={false}
                         value={field.value}
                         onValueChange={(values) => {
-                          field.onChange(values.formattedValue);
+                          field.onChange(values.floatValue || 0);
                         }}
                       />
                     </FormControl>
@@ -201,7 +203,7 @@ export function CakeFormDialog({
                         allowNegative={false}
                         value={field.value}
                         onValueChange={(values) => {
-                          field.onChange(values.formattedValue);
+                          field.onChange(values.floatValue || 0);
                         }}
                       />
                     </FormControl>
@@ -235,6 +237,7 @@ export function CakeFormDialog({
                 variant="outline"
                 onClick={() => onOpenChange(false)}
                 className="rounded-full border-gray-200"
+                disabled={isSubmitting}
               >
                 <X className="mr-2 h-4 w-4" />
                 Hủy
@@ -242,8 +245,13 @@ export function CakeFormDialog({
               <Button
                 type="submit"
                 className="rounded-full bg-[#FFB5C5] text-white hover:bg-[#FF9FB3]"
+                disabled={isSubmitting}
               >
-                {editingCake ? "Cập nhật" : "Thêm mới"}
+                {isSubmitting
+                  ? "Đang xử lý..."
+                  : editingCake
+                    ? "Cập nhật"
+                    : "Thêm mới"}
               </Button>
             </DialogFooter>
           </form>

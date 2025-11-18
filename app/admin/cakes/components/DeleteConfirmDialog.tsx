@@ -13,12 +13,14 @@ interface DeleteConfirmDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onConfirm: () => void;
+  isSubmitting?: boolean;
 }
 
 export function DeleteConfirmDialog({
   open,
   onOpenChange,
   onConfirm,
+  isSubmitting = false,
 }: DeleteConfirmDialogProps) {
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
@@ -33,12 +35,15 @@ export function DeleteConfirmDialog({
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel className="rounded-full">Hủy</AlertDialogCancel>
+          <AlertDialogCancel className="rounded-full" disabled={isSubmitting}>
+            Hủy
+          </AlertDialogCancel>
           <AlertDialogAction
             onClick={onConfirm}
             className="rounded-full bg-red-500 text-white hover:bg-red-600"
+            disabled={isSubmitting}
           >
-            Xóa
+            {isSubmitting ? "Đang xóa..." : "Xóa"}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

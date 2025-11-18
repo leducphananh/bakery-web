@@ -1,15 +1,9 @@
 import { ImageWithFallback } from "@/app/components/figma/ImageWithFallback";
 import { Button } from "@/app/components/ui/button";
 import { Pencil, Trash2 } from "lucide-react";
+import type { CakeData } from "../actions";
 
-export interface CakeType {
-  id: number;
-  name: string;
-  price: string;
-  originalPrice: string;
-  image: string;
-  description?: string;
-}
+export type CakeType = CakeData;
 
 interface CakeCardProps {
   cake: CakeType;
@@ -22,7 +16,7 @@ export function CakeCard({ cake, onEdit, onDelete }: CakeCardProps) {
     <div className="overflow-hidden rounded-3xl bg-white shadow-md transition-shadow hover:shadow-xl">
       <div className="aspect-square overflow-hidden bg-gray-100">
         <ImageWithFallback
-          src={cake.image}
+          src={cake.image || ""}
           alt={cake.name}
           className="h-full w-full object-cover"
         />
@@ -36,11 +30,13 @@ export function CakeCard({ cake, onEdit, onDelete }: CakeCardProps) {
         )}
         <div className="mb-4 flex items-center gap-3">
           <span className="text-xl font-semibold text-[#FFB5C5]">
-            {cake.price}
+            {cake.price.toLocaleString("vi-VN")}₫
           </span>
-          <span className="text-sm text-gray-400 line-through">
-            {cake.originalPrice}
-          </span>
+          {cake.originalPrice && (
+            <span className="text-sm text-gray-400 line-through">
+              {cake.originalPrice.toLocaleString("vi-VN")}₫
+            </span>
+          )}
         </div>
         <div className="flex gap-2">
           <Button
