@@ -1,6 +1,6 @@
 "use server";
 
-import { bucketName, initializeBucket, minioClient } from "@/lib/minio";
+import { cloudinary } from "@/lib/cloudinary";
 
 export async function uploadImage(formData: FormData) {
   try {
@@ -19,38 +19,35 @@ export async function uploadImage(formData: FormData) {
       };
     }
 
-    // Validate file size (5MB max)
-    const maxSize = 5 * 1024 * 1024; // 5MB
+    // Validate file size (10MB max for Cloudinary free tier)
+    const maxSize = 10 * 1024 * 1024; // 10MB
     if (file.size > maxSize) {
-      return { success: false, error: "File size must be less than 5MB" };
+      return { success: false, error: "File size must be less than 10MB" };
     }
 
-    // Ensure bucket exists
-    await initializeBucket();
-
-    // Convert file to buffer
+    // Convert file to base64
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
+    const base64 = buffer.toString("base64");
+    const dataUri = `data:${file.type};base64,${base64}`;
 
-    // Generate unique filename
-    const timestamp = Date.now();
-    const originalName = file.name.replace(/\s+/g, "-");
-    const filename = `cakes/${timestamp}-${originalName}`;
-
-    // Upload to MinIO
-    await minioClient.putObject(bucketName, filename, buffer, buffer.length, {
-      "Content-Type": file.type,
+    // Upload to Cloudinary
+    const result = await cloudinary.uploader.upload(dataUri, {
+      folder: "bakery-cakes",
+      resource_type: "image",
+      transformation: [
+        { width: 1080, height: 1080, crop: "limit" },
+        { quality: "auto" },
+      ],
     });
 
-    console.log("File uploaded successfully to MinIO:", {
-      filename,
-      bucket: bucketName,
+    console.log("File uploaded successfully to Cloudinary:", {
+      publicId: result.public_id,
+      url: result.secure_url,
       fileSize: file.size,
     });
 
-    // Generate public URL
-    const publicUrl = `${process.env.MINIO_PUBLIC_URL}/${bucketName}/${filename}`;
-    return { success: true, url: publicUrl };
+    return { success: true, url: result.secure_url };
   } catch (error) {
     console.error("Failed to upload image:", error);
     return { success: false, error: "Failed to upload image" };
