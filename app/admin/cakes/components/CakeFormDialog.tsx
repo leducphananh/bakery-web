@@ -19,18 +19,20 @@ import {
 import { Input } from "@/app/components/ui/input";
 import { Textarea } from "@/app/components/ui/textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { X } from "lucide-react";
-import { useEffect } from "react";
+import { Upload, X } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { NumericFormat } from "react-number-format";
+import { toast } from "sonner";
 import * as z from "zod";
+import { uploadImage } from "../upload";
 import { CakeType } from "./CakeCard";
 
 const cakeFormSchema = z.object({
   name: z.string().min(1, "Tên bánh không được để trống"),
   price: z.number().min(1, "Giá bán phải lớn hơn 0"),
   originalPrice: z.number().min(1, "Giá gốc phải lớn hơn 0").optional(),
-  image: z.string().url("URL hình ảnh không hợp lệ").optional(),
+  image: z.string().optional(),
   description: z.string().optional(),
 });
 
@@ -51,6 +53,10 @@ export function CakeFormDialog({
   onSubmit,
   isSubmitting = false,
 }: CakeFormDialogProps) {
+  const [isUploading, setIsUploading] = useState(false);
+  const [imageMode, setImageMode] = useState<"url" | "upload">("upload");
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
   const form = useForm<CakeFormValues>({
     resolver: zodResolver(cakeFormSchema),
     defaultValues: {
@@ -85,6 +91,40 @@ export function CakeFormDialog({
   const handleSubmit = (values: CakeFormValues) => {
     onSubmit(values);
     form.reset();
+  };
+
+  const handleFileSelect = async (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    setIsUploading(true);
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const result = await uploadImage(formData);
+
+      if (result.success && result.url) {
+        form.setValue("image", result.url);
+        toast.success("Tải ảnh lên thành công!");
+      } else {
+        toast.error(result.error || "Không thể tải ảnh lên");
+      }
+    } catch (err) {
+      console.error("Upload error:", err);
+      toast.error("Có lỗi xảy ra khi tải ảnh lên");
+    } finally {
+      setIsUploading(false);
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
+    }
+  };
+
+  const handleImageModeToggle = () => {
+    setImageMode((prev) => (prev === "upload" ? "url" : "upload"));
   };
 
   return (
@@ -131,16 +171,54 @@ export function CakeFormDialog({
               name="image"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-[#8B5A3C]">
-                    URL hình ảnh <span className="text-red-500">*</span>
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="https://example.com/image.jpg"
-                      className="rounded-full border-gray-200 focus:border-[#FFB5C5]"
-                      {...field}
-                    />
-                  </FormControl>
+                  <div className="flex items-center justify-between">
+                    <FormLabel className="text-[#8B5A3C]">Hình ảnh</FormLabel>
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      onClick={handleImageModeToggle}
+                      className="h-8 text-xs text-[#8B5A3C]"
+                    >
+                      {imageMode === "upload" ? "Dùng URL" : "Tải ảnh lên"}
+                    </Button>
+                  </div>
+
+                  {imageMode === "upload" ? (
+                    <div className="space-y-2">
+                      <input
+                        ref={fileInputRef}
+                        type="file"
+                        accept="image/*"
+                        onChange={handleFileSelect}
+                        className="hidden"
+                        id="image-upload"
+                      />
+                      <FormControl>
+                        <Button
+                          type="button"
+                          variant="outline"
+                          className="w-full rounded-full border-gray-200 hover:border-[#FFB5C5]"
+                          onClick={() => fileInputRef.current?.click()}
+                          disabled={isUploading}
+                        >
+                          <Upload className="mr-2 h-4 w-4" />
+                          {isUploading
+                            ? "Đang tải lên..."
+                            : "Chọn ảnh từ máy tính"}
+                        </Button>
+                      </FormControl>
+                    </div>
+                  ) : (
+                    <FormControl>
+                      <Input
+                        placeholder="https://example.com/image.jpg"
+                        className="rounded-full border-gray-200 focus:border-[#FFB5C5]"
+                        {...field}
+                      />
+                    </FormControl>
+                  )}
+
                   <FormMessage />
                   {field.value && (
                     <div className="mt-3 overflow-hidden rounded-2xl border-2 border-gray-200">
