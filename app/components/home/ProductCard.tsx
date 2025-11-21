@@ -1,6 +1,6 @@
 import { ShoppingCart } from "lucide-react";
-import { ImageWithFallback } from "./figma/ImageWithFallback";
-import { Button } from "./ui/button";
+import { ImageWithFallback } from "../figma/ImageWithFallback";
+import { Button } from "../ui/button";
 
 interface ProductCardProps {
   image: string;

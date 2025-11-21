@@ -1,5 +1,5 @@
 import { Star } from "lucide-react";
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
 interface ReviewCardProps {
   name: string;
@@ -30,7 +30,7 @@ export function ReviewCard({ name, avatar, rating, review }: ReviewCardProps) {
           </div>
         </div>
       </div>
-      <p className="text-gray-600 italic">"{review}"</p>
+      <p className="text-gray-600 italic">&ldquo;{review}&rdquo;</p>
     </div>
   );
 }
