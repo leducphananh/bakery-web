@@ -10,6 +10,7 @@ export type CakeData = {
   price: number;
   originalPrice: number | null;
   image: string | null;
+  isActive: boolean;
   createdAt: Date;
   updatedAt: Date;
 };
@@ -28,13 +29,30 @@ export async function getCakes(): Promise<CakeData[]> {
   }
 }
 
+export async function getActiveCakes(): Promise<CakeData[]> {
+  try {
+    const cakes = await prisma.cake.findMany({
+      where: {
+        isActive: true,
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+    return cakes;
+  } catch (error) {
+    console.error("Failed to fetch active cakes:", error);
+    throw new Error("Failed to fetch active cakes");
+  }
+}
+
 export async function createCake(data: {
   name: string;
   description?: string;
   price: number;
   originalPrice?: number;
   image?: string;
-}) {
+}): Promise<{ success: boolean; cake?: CakeData; error?: string }> {
   try {
     const cake = await prisma.cake.create({
       data: {
@@ -62,7 +80,7 @@ export async function updateCake(
     originalPrice?: number;
     image?: string;
   },
-) {
+): Promise<{ success: boolean; cake?: CakeData; error?: string }> {
   try {
     const cake = await prisma.cake.update({
       where: { id },
@@ -92,5 +110,23 @@ export async function deleteCake(id: number) {
   } catch (error) {
     console.error("Failed to delete cake:", error);
     return { success: false, error: "Failed to delete cake" };
+  }
+}
+
+export async function toggleCakeActive(
+  id: number,
+  isActive: boolean,
+): Promise<{ success: boolean; cake?: CakeData; error?: string }> {
+  try {
+    const cake = await prisma.cake.update({
+      where: { id },
+      data: { isActive },
+    });
+    revalidatePath("/admin/cakes");
+    revalidatePath("/");
+    return { success: true, cake };
+  } catch (error) {
+    console.error("Failed to toggle cake active:", error);
+    return { success: false, error: "Failed to toggle cake active" };
   }
 }

@@ -16,7 +16,10 @@ export default function AdminLayout({
             <Link href="/admin/cakes" className="flex items-center gap-3">
               <Cake className="h-8 w-8 text-[#FFB5C5]" />
               <div>
-                <h1 className="font-pacifico text-2xl text-[#8B5A3C]">
+                <h1
+                  className="font-pacifico text-2xl text-[#8B5A3C]"
+                  style={{ fontFamily: "var(--font-pacifico), cursive" }}
+                >
                   Milove
                 </h1>
                 <p className="text-sm text-gray-500">Trang quản trị</p>

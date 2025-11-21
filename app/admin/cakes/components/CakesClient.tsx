@@ -2,7 +2,13 @@
 
 import { useState } from "react";
 import { toast } from "sonner";
-import { createCake, deleteCake, updateCake, type CakeData } from "../actions";
+import {
+  createCake,
+  deleteCake,
+  toggleCakeActive,
+  updateCake,
+  type CakeData,
+} from "../actions";
 import { CakeCard } from "./CakeCard";
 import { CakeFormDialog, type CakeFormValues } from "./CakeFormDialog";
 import { DeleteConfirmDialog } from "./DeleteConfirmDialog";
@@ -87,6 +93,24 @@ export function CakesClient({ initialCakes }: CakesClientProps) {
     }
   };
 
+  const handleToggleActive = async (id: number, isActive: boolean) => {
+    try {
+      const result = await toggleCakeActive(id, isActive);
+      if (result.success && result.cake) {
+        setCakes(cakes.map((c) => (c.id === id ? result.cake! : c)));
+        toast.success(
+          isActive
+            ? "Bánh đã được hiển thị trên trang chủ!"
+            : "Bánh đã được ẩn khỏi trang chủ!",
+        );
+      } else {
+        toast.error(result.error || "Có lỗi xảy ra");
+      }
+    } catch {
+      toast.error("Có lỗi xảy ra");
+    }
+  };
+
   return (
     <main className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
       <PageHeader onAddNew={handleAddNew} />
@@ -101,6 +125,7 @@ export function CakesClient({ initialCakes }: CakesClientProps) {
               cake={cake}
               onEdit={handleEdit}
               onDelete={handleDeleteClick}
+              onToggleActive={handleToggleActive}
             />
           ))}
         </div>

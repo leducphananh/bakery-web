@@ -8,63 +8,25 @@ import {
   Phone,
   Twitter,
 } from "lucide-react";
+import { getActiveCakes } from "./admin/cakes/actions";
 import { ImageWithFallback } from "./components/figma/ImageWithFallback";
 import { ProductCard } from "./components/ProductCard";
 import { ReviewCard } from "./components/ReviewCard";
 import { Button } from "./components/ui/button";
 import { Input } from "./components/ui/input";
 
-export default function Home() {
-  const products = [
-    {
-      id: 1,
-      name: "Bánh Socola Mơ Ước",
-      price: "120.000₫",
-      originalPrice: "150.000₫",
-      image:
-        "https://images.unsplash.com/photo-1606890737304-57a1ca8a5b62?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxjaG9jb2xhdGUlMjBjYWtlfGVufDF8fHx8MTc2Mjk1MTMxNHww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-    },
-    {
-      id: 2,
-      name: "Bánh Dâu Tây Ngọt Ngào",
-      price: "135.000₫",
-      originalPrice: "170.000₫",
-      image:
-        "https://images.unsplash.com/photo-1602663491496-73f07481dbea?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxzdHJhd2JlcnJ5JTIwY2FrZXxlbnwxfHx8fDE3NjI5NTU3NjB8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-    },
-    {
-      id: 3,
-      name: "Hộp Bánh Cupcake Vani",
-      price: "85.000₫",
-      originalPrice: "110.000₫",
-      image:
-        "https://images.unsplash.com/photo-1723638174646-5322cd088233?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx2YW5pbGxhJTIwY3VwY2FrZXN8ZW58MXx8fHwxNzYzMDA1MDgxfDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-    },
-    {
-      id: 4,
-      name: "Bánh Tart Chanh Dây",
-      price: "98.000₫",
-      originalPrice: "125.000₫",
-      image:
-        "https://images.unsplash.com/photo-1543508185-225c92847541?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxsZW1vbiUyMHRhcnR8ZW58MXx8fHwxNzYzMDA1MDgxfDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-    },
-    {
-      id: 5,
-      name: "Macaron Pháp",
-      price: "95.000₫",
-      originalPrice: "120.000₫",
-      image:
-        "https://images.unsplash.com/photo-1452130200010-cdd9424b1729?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtYWNhcm9ucyUyMHBhc3RyeXxlbnwxfHx8fDE3NjI5NDA0NDZ8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-    },
-    {
-      id: 6,
-      name: "Bánh Phô Mai Việt Quất",
-      price: "125.000₫",
-      originalPrice: "155.000₫",
-      image:
-        "https://images.unsplash.com/photo-1567327613485-fbc7bf196198?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxibHVlYmVycnklMjBjaGVlc2VjYWtlfGVufDF8fHx8MTc2MjkyMzg3OXww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
-    },
-  ];
+export default async function Home() {
+  const activeCakes = await getActiveCakes();
+
+  const products = activeCakes.map((cake) => ({
+    id: cake.id,
+    name: cake.name,
+    price: `${cake.price.toLocaleString("vi-VN")}₫`,
+    originalPrice: cake.originalPrice
+      ? `${cake.originalPrice.toLocaleString("vi-VN")}₫`
+      : undefined,
+    image: cake.image || "",
+  }));
 
   const reviews = [
     {

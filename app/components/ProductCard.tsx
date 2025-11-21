@@ -6,7 +6,7 @@ interface ProductCardProps {
   image: string;
   name: string;
   price: string;
-  originalPrice: string;
+  originalPrice?: string;
 }
 
 export function ProductCard({
@@ -31,9 +31,11 @@ export function ProductCard({
             <span className="text-xl font-semibold text-[#FFB5C5]">
               {price}
             </span>
-            <span className="text-sm text-gray-400 line-through">
-              {originalPrice}
-            </span>
+            {originalPrice && (
+              <span className="text-sm text-gray-400 line-through">
+                {originalPrice}
+              </span>
+            )}
           </div>
           <Button
             size="sm"

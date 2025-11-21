@@ -1,5 +1,6 @@
 import { ImageWithFallback } from "@/app/components/figma/ImageWithFallback";
 import { Button } from "@/app/components/ui/button";
+import { Switch } from "@/app/components/ui/switch";
 import { Pencil, Trash2 } from "lucide-react";
 import type { CakeData } from "../actions";
 
@@ -9,9 +10,15 @@ interface CakeCardProps {
   cake: CakeType;
   onEdit: (cake: CakeType) => void;
   onDelete: (id: number) => void;
+  onToggleActive: (id: number, isActive: boolean) => void;
 }
 
-export function CakeCard({ cake, onEdit, onDelete }: CakeCardProps) {
+export function CakeCard({
+  cake,
+  onEdit,
+  onDelete,
+  onToggleActive,
+}: CakeCardProps) {
   return (
     <div className="overflow-hidden rounded-3xl bg-white shadow-md transition-shadow hover:shadow-xl">
       <div className="aspect-square overflow-hidden bg-gray-100">
@@ -22,7 +29,18 @@ export function CakeCard({ cake, onEdit, onDelete }: CakeCardProps) {
         />
       </div>
       <div className="p-6">
-        <h3 className="mb-3 text-[#8B5A3C]">{cake.name}</h3>
+        <div className="mb-3 flex items-start justify-between">
+          <h3 className="text-[#8B5A3C]">{cake.name}</h3>
+          <div className="flex items-center gap-2">
+            <span className="text-xs text-gray-500">
+              {cake.isActive ? "Hiển thị" : "Ẩn"}
+            </span>
+            <Switch
+              checked={cake.isActive}
+              onCheckedChange={(checked) => onToggleActive(cake.id, checked)}
+            />
+          </div>
+        </div>
         {cake.description && (
           <p className="mb-3 line-clamp-2 text-sm text-gray-500">
             {cake.description}
