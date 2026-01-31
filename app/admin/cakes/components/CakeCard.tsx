@@ -36,7 +36,7 @@ export function CakeCard({
               {cake.is_available ? "Hiển thị" : "Ẩn"}
             </span>
             <Switch
-              checked={cake.is_available}
+              checked={cake.is_available ?? false}
               onCheckedChange={(checked) => onToggleActive(cake.id, checked)}
             />
           </div>

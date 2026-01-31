@@ -30,7 +30,7 @@ interface Order {
   customer_name: string;
   customer_phone: string;
   customer_address: string;
-  created_at: string;
+  created_at: string | null;
 }
 
 const statusColors: Record<string, string> = {
@@ -66,6 +66,10 @@ export default function AdminOrderDetailPage() {
 
   const fetchOrderDetail = async () => {
     try {
+      if (!params.id || typeof params.id !== "string") {
+        throw new Error("Invalid order ID");
+      }
+
       const { data: orderData, error: orderError } = await supabase
         .from("orders")
         .select("*")
@@ -170,13 +174,15 @@ export default function AdminOrderDetailPage() {
             <div>
               <p className="text-sm text-gray-600">Ngày đặt</p>
               <p className="font-medium">
-                {new Date(order.created_at).toLocaleDateString("vi-VN", {
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-                  hour: "2-digit",
-                  minute: "2-digit",
-                })}
+                {order.created_at
+                  ? new Date(order.created_at).toLocaleDateString("vi-VN", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })
+                  : "N/A"}
               </p>
             </div>
             <div>

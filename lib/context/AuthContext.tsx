@@ -6,7 +6,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 
 interface Profile {
   id: string;
-  role: "admin" | "user";
+  role: string;
   full_name: string | null;
   phone: string | null;
   address: string | null;

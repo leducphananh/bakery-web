@@ -23,7 +23,7 @@ interface Order {
   customer_name: string;
   customer_phone: string;
   customer_address: string;
-  created_at: string;
+  created_at: string | null;
 }
 
 const statusColors: Record<string, string> = {
@@ -159,16 +159,18 @@ export default function AdminOrdersPage() {
                     <p>
                       <span className="text-gray-600">Ngày đặt:</span>{" "}
                       <span className="font-medium">
-                        {new Date(order.created_at).toLocaleDateString(
-                          "vi-VN",
-                          {
-                            year: "numeric",
-                            month: "long",
-                            day: "numeric",
-                            hour: "2-digit",
-                            minute: "2-digit",
-                          },
-                        )}
+                        {order.created_at
+                          ? new Date(order.created_at).toLocaleDateString(
+                              "vi-VN",
+                              {
+                                year: "numeric",
+                                month: "long",
+                                day: "numeric",
+                                hour: "2-digit",
+                                minute: "2-digit",
+                              },
+                            )
+                          : "N/A"}
                       </span>
                     </p>
                   </div>

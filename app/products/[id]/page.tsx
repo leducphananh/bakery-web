@@ -25,7 +25,7 @@ interface Cake {
   price: number;
   original_price: number | null;
   image_url: string | null;
-  is_available: boolean;
+  is_available: boolean | null;
 }
 
 export default function ProductDetailPage() {
@@ -44,6 +44,10 @@ export default function ProductDetailPage() {
 
   const fetchCake = async () => {
     try {
+      if (!params.id || typeof params.id !== "string") {
+        throw new Error("Invalid product ID");
+      }
+
       const { data, error } = await supabase
         .from("cakes")
         .select("*")

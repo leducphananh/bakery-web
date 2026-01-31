@@ -17,7 +17,7 @@ interface Cake {
   description: string | null;
   price: number;
   image_url: string | null;
-  is_available: boolean;
+  is_available: boolean | null;
 }
 
 export default function ProductsPage() {

@@ -8,7 +8,7 @@ interface CakeCardProps {
   description: string | null;
   price: number;
   image_url: string | null;
-  is_available: boolean;
+  is_available: boolean | null;
   onAddToCart: () => void;
 }
 

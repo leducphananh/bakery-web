@@ -18,7 +18,7 @@ interface Order {
   customer_name: string;
   customer_phone: string;
   customer_address: string;
-  created_at: string;
+  created_at: string | null;
 }
 
 const statusColors: Record<string, string> = {
@@ -111,16 +111,18 @@ export default function OrdersPage() {
                           </Badge>
                         </div>
                         <p className="text-sm text-gray-600">
-                          {new Date(order.created_at).toLocaleDateString(
-                            "vi-VN",
-                            {
-                              year: "numeric",
-                              month: "long",
-                              day: "numeric",
-                              hour: "2-digit",
-                              minute: "2-digit",
-                            },
-                          )}
+                          {order.created_at
+                            ? new Date(order.created_at).toLocaleDateString(
+                                "vi-VN",
+                                {
+                                  year: "numeric",
+                                  month: "long",
+                                  day: "numeric",
+                                  hour: "2-digit",
+                                  minute: "2-digit",
+                                },
+                              )
+                            : "N/A"}
                         </p>
                         <p className="mt-1 text-sm text-gray-600">
                           Giao đến: {order.customer_address}

@@ -10,8 +10,8 @@ export type CakeData = {
   price: number;
   original_price: number | null;
   image_url: string | null;
-  is_available: boolean;
-  created_at: string;
+  is_available: boolean | null;
+  created_at: string | null;
 };
 
 export async function getCakes(): Promise<CakeData[]> {
