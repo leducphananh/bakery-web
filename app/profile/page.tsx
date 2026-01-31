@@ -1,13 +1,14 @@
 "use client";
 
-import Footer from "@/app/components/Footer";
-import Navbar from "@/app/components/Navbar";
+import { DecorativeBackground } from "@/app/components/home/DecorativeBackground";
+import { Footer } from "@/app/components/home/Footer";
+import { Navigation } from "@/app/components/home/Navigation";
 import { Button } from "@/app/components/ui/button";
-import { Card } from "@/app/components/ui/card";
 import { Input } from "@/app/components/ui/input";
 import { Label } from "@/app/components/ui/label";
 import { useAuth } from "@/lib/context/AuthContext";
 import { createClient } from "@/lib/supabase/client";
+import { Mail, MapPin, Phone, User } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
@@ -80,42 +81,63 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col">
-      <Navbar />
+    <div className="relative min-h-screen">
+      <DecorativeBackground />
+      <Navigation />
 
-      <main className="flex-1 py-8">
+      <main className="relative z-10 py-12">
         <div className="container mx-auto max-w-2xl px-4">
-          <h1 className="mb-8 text-3xl font-bold">Thông tin cá nhân</h1>
+          {/* Header */}
+          <div className="mb-8 text-center">
+            <h1 className="font-pacifico text-4xl text-[#8B5A3C] md:text-5xl">
+              Thông tin cá nhân
+            </h1>
+            <p className="mt-2 text-gray-600">
+              Quản lý thông tin tài khoản của bạn
+            </p>
+          </div>
 
-          <Card className="p-6">
+          {/* Profile Card */}
+          <div className="rounded-3xl bg-white p-8 shadow-xl">
             <form onSubmit={handleSubmit} className="space-y-6">
-              <div>
-                <Label htmlFor="email">Email</Label>
+              <div className="space-y-2">
+                <Label htmlFor="email" className="flex items-center gap-2 text-[#8B5A3C]">
+                  <Mail className="h-4 w-4" />
+                  Email
+                </Label>
                 <Input
                   id="email"
                   type="email"
                   value={user.email || ""}
                   disabled
-                  className="bg-gray-100"
+                  className="rounded-full border-2 border-gray-200 bg-gray-50 px-4 py-6"
                 />
                 <p className="mt-1 text-sm text-gray-500">
                   Email không thể thay đổi
                 </p>
               </div>
 
-              <div>
-                <Label htmlFor="fullName">Họ và tên</Label>
+              <div className="space-y-2">
+                <Label htmlFor="fullName" className="flex items-center gap-2 text-[#8B5A3C]">
+                  <User className="h-4 w-4" />
+                  Họ và tên
+                </Label>
                 <Input
                   id="fullName"
                   name="fullName"
                   value={formData.fullName}
                   onChange={handleChange}
                   disabled={loading}
+                  className="rounded-full border-2 border-gray-200 px-4 py-6 focus:border-[#FFB5C5] focus:ring-[#FFB5C5]"
+                  placeholder="Nhập họ và tên"
                 />
               </div>
 
-              <div>
-                <Label htmlFor="phone">Số điện thoại</Label>
+              <div className="space-y-2">
+                <Label htmlFor="phone" className="flex items-center gap-2 text-[#8B5A3C]">
+                  <Phone className="h-4 w-4" />
+                  Số điện thoại
+                </Label>
                 <Input
                   id="phone"
                   name="phone"
@@ -123,17 +145,23 @@ export default function ProfilePage() {
                   value={formData.phone}
                   onChange={handleChange}
                   disabled={loading}
+                  className="rounded-full border-2 border-gray-200 px-4 py-6 focus:border-[#FFB5C5] focus:ring-[#FFB5C5]"
+                  placeholder="Nhập số điện thoại"
                 />
               </div>
 
-              <div>
-                <Label htmlFor="address">Địa chỉ</Label>
+              <div className="space-y-2">
+                <Label htmlFor="address" className="flex items-center gap-2 text-[#8B5A3C]">
+                  <MapPin className="h-4 w-4" />
+                  Địa chỉ
+                </Label>
                 <Input
                   id="address"
                   name="address"
                   value={formData.address}
                   onChange={handleChange}
                   disabled={loading}
+                  className="rounded-full border-2 border-gray-200 px-4 py-6 focus:border-[#FFB5C5] focus:ring-[#FFB5C5]"
                   placeholder="Số nhà, tên đường, phường/xã, quận/huyện, tỉnh/thành phố"
                 />
               </div>
@@ -141,13 +169,13 @@ export default function ProfilePage() {
               <Button
                 type="submit"
                 size="lg"
-                className="w-full"
+                className="w-full rounded-full bg-gradient-to-r from-[#FFB5C5] to-[#FF8FAB] py-6 text-lg font-semibold text-white shadow-lg transition-all duration-300 hover:scale-[1.02] hover:shadow-xl disabled:opacity-50"
                 disabled={loading}
               >
                 {loading ? "Đang lưu..." : "Lưu thay đổi"}
               </Button>
             </form>
-          </Card>
+          </div>
         </div>
       </main>
 
