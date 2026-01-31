@@ -25,8 +25,8 @@ import { useForm } from "react-hook-form";
 import { NumericFormat } from "react-number-format";
 import { toast } from "sonner";
 import * as z from "zod";
+import type { CakeData } from "../actions";
 import { uploadImage } from "../upload";
-import { CakeType } from "./CakeCard";
 
 const cakeFormSchema = z.object({
   name: z.string().min(1, "Tên bánh không được để trống"),
@@ -41,7 +41,7 @@ export type CakeFormValues = z.infer<typeof cakeFormSchema>;
 interface CakeFormDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  editingCake: CakeType | null;
+  editingCake: CakeData | null;
   onSubmit: (values: CakeFormValues) => void;
   isSubmitting?: boolean;
 }
@@ -72,9 +72,11 @@ export function CakeFormDialog({
     if (editingCake) {
       form.reset({
         name: editingCake.name,
-        price: editingCake.price,
-        originalPrice: editingCake.originalPrice || 0,
-        image: editingCake.image || "",
+        price: Number(editingCake.price),
+        originalPrice: editingCake.original_price
+          ? Number(editingCake.original_price)
+          : 0,
+        image: editingCake.image_url || "",
         description: editingCake.description || "",
       });
     } else {

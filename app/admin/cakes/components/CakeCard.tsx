@@ -9,8 +9,8 @@ export type CakeType = CakeData;
 interface CakeCardProps {
   cake: CakeType;
   onEdit: (cake: CakeType) => void;
-  onDelete: (id: number) => void;
-  onToggleActive: (id: number, isActive: boolean) => void;
+  onDelete: (id: string) => void;
+  onToggleActive: (id: string, isActive: boolean) => void;
 }
 
 export function CakeCard({
@@ -23,7 +23,7 @@ export function CakeCard({
     <div className="overflow-hidden rounded-3xl bg-white shadow-md transition-shadow hover:shadow-xl">
       <div className="aspect-square overflow-hidden bg-gray-100">
         <ImageWithFallback
-          src={cake.image || ""}
+          src={cake.image_url || ""}
           alt={cake.name}
           className="h-full w-full object-cover"
         />
@@ -33,10 +33,10 @@ export function CakeCard({
           <h3 className="text-[#8B5A3C]">{cake.name}</h3>
           <div className="flex items-center gap-2">
             <span className="text-xs text-gray-500">
-              {cake.isActive ? "Hiển thị" : "Ẩn"}
+              {cake.is_available ? "Hiển thị" : "Ẩn"}
             </span>
             <Switch
-              checked={cake.isActive}
+              checked={cake.is_available}
               onCheckedChange={(checked) => onToggleActive(cake.id, checked)}
             />
           </div>
@@ -50,9 +50,9 @@ export function CakeCard({
           <span className="text-xl font-semibold text-[#FFB5C5]">
             {cake.price.toLocaleString("vi-VN")}₫
           </span>
-          {cake.originalPrice && (
+          {cake.original_price && (
             <span className="text-sm text-gray-400 line-through">
-              {cake.originalPrice.toLocaleString("vi-VN")}₫
+              {Number(cake.original_price).toLocaleString("vi-VN")}₫
             </span>
           )}
         </div>

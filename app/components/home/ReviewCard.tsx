@@ -2,22 +2,34 @@ import { Star } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
 interface ReviewCardProps {
-  name: string;
-  avatar: string;
+  name?: string;
+  avatar?: string;
   rating: number;
   review: string;
+  author?: string;
+  date?: string;
 }
 
-export function ReviewCard({ name, avatar, rating, review }: ReviewCardProps) {
+export function ReviewCard({
+  name,
+  avatar,
+  rating,
+  review,
+  author,
+  date,
+}: ReviewCardProps) {
   return (
     <div className="rounded-3xl bg-white p-6 shadow-md transition-shadow hover:shadow-xl">
       <div className="mb-4 flex items-center gap-4">
         <Avatar className="h-14 w-14 border-2 border-[#FFB5C5]">
-          <AvatarImage src={avatar} alt={name} />
-          <AvatarFallback className="bg-[#FFF5E6]">{name[0]}</AvatarFallback>
+          <AvatarImage src={avatar} alt={author || name} />
+          <AvatarFallback className="bg-[#FFF5E6]">
+            {(author || name)?.[0]}
+          </AvatarFallback>
         </Avatar>
         <div>
-          <p className="text-[#8B5A3C]">{name}</p>
+          <p className="font-semibold text-[#8B5A3C]">{author || name}</p>
+          {date && <p className="text-sm text-gray-500">{date}</p>}
           <div className="flex gap-1">
             {Array.from({ length: 5 }).map((_, i) => (
               <Star

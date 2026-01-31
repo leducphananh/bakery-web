@@ -1,48 +1,65 @@
+"use client";
+
 import { Button } from "@/app/components/ui/button";
-import { Cake, Home } from "lucide-react";
+import { useAuth } from "@/lib/context/AuthContext";
+import { Cake, Home, LogOut, Package } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function AdminLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const { signOut } = useAuth();
+  const router = useRouter();
+
+  const handleSignOut = async () => {
+    await signOut();
+    router.push("/");
+  };
+
   return (
-    <div className="min-h-screen bg-linear-to-br from-[#FFF5E6] to-[#FFE9F0]">
+    <div className="min-h-screen bg-gradient-to-br from-pink-50 to-orange-50">
       {/* Header */}
       <header className="sticky top-0 z-10 bg-white/80 shadow-sm backdrop-blur-md">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex h-20 items-center justify-between">
-            <Link href="/admin/cakes" className="flex items-center gap-3">
-              <Cake className="h-8 w-8 text-[#FFB5C5]" />
+            <Link href="/admin" className="flex items-center gap-3">
+              <Cake className="text-primary h-8 w-8" />
               <div>
                 <h1
-                  className="font-pacifico text-2xl text-[#8B5A3C]"
+                  className="font-pacifico text-primary text-2xl"
                   style={{ fontFamily: "var(--font-pacifico), cursive" }}
                 >
-                  Milove
+                  🧁 Tiệm Bánh Ngọt
                 </h1>
                 <p className="text-sm text-gray-500">Trang quản trị</p>
               </div>
             </Link>
             <div className="flex items-center gap-4">
               <Link href="/admin/cakes">
-                <Button
-                  variant="ghost"
-                  className="text-[#8B5A3C] hover:text-[#FFB5C5]"
-                >
-                  Quản Lý Bánh
+                <Button variant="ghost">
+                  <Cake className="mr-2 h-4 w-4" />
+                  Quản lý bánh
+                </Button>
+              </Link>
+              <Link href="/admin/orders">
+                <Button variant="ghost">
+                  <Package className="mr-2 h-4 w-4" />
+                  Quản lý đơn hàng
                 </Button>
               </Link>
               <Link href="/">
-                <Button
-                  variant="outline"
-                  className="rounded-full border-[#FFB5C5] text-[#8B5A3C] hover:bg-[#FFB5C5]/10"
-                >
+                <Button variant="outline">
                   <Home className="mr-2 h-4 w-4" />
                   Về trang chủ
                 </Button>
               </Link>
+              <Button variant="ghost" onClick={handleSignOut}>
+                <LogOut className="mr-2 h-4 w-4" />
+                Đăng xuất
+              </Button>
             </div>
           </div>
         </div>

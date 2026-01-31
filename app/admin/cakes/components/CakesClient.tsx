@@ -24,7 +24,7 @@ export function CakesClient({ initialCakes }: CakesClientProps) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [editingCake, setEditingCake] = useState<CakeData | null>(null);
-  const [deletingCakeId, setDeletingCakeId] = useState<number | null>(null);
+  const [deletingCakeId, setDeletingCakeId] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleAddNew = () => {
@@ -37,7 +37,7 @@ export function CakesClient({ initialCakes }: CakesClientProps) {
     setIsDialogOpen(true);
   };
 
-  const handleDeleteClick = (id: number) => {
+  const handleDeleteClick = (id: string) => {
     setDeletingCakeId(id);
     setIsDeleteDialogOpen(true);
   };
@@ -93,7 +93,7 @@ export function CakesClient({ initialCakes }: CakesClientProps) {
     }
   };
 
-  const handleToggleActive = async (id: number, isActive: boolean) => {
+  const handleToggleActive = async (id: string, isActive: boolean) => {
     try {
       const result = await toggleCakeActive(id, isActive);
       if (result.success && result.cake) {
